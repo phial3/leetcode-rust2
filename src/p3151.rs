@@ -2,12 +2,9 @@ use crate::Solution;
 
 impl Solution {
     pub fn is_array_special(nums: Vec<i32>) -> bool {
-        nums.windows(2).all(|window| {
-            let [prev, curr] = *window else {
-                unreachable!()
-            };
-            (prev ^ curr) & 1 != 0
-        })
+        nums.iter()
+            .enumerate()
+            .all(|(i, &num)| (num % 2) != (i as i32 % 2))
     }
 }
 
@@ -17,7 +14,12 @@ mod tests {
 
     #[test]
     fn p3151_test() {
+        check(&[], true);
         check(&[1], true);
+        check(&[5], true);
+        check(&[-3, 4], true);
+        check(&[1, 3], false);
+        check(&[2, 4], false);
         check(&[2, 1, 4], false);
         check(&[4, 3, 1, 6], false);
     }
